@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Maratones-2D-Runner.sln"
+    "dotnet.defaultSolution": "Maratones-2D-Runner.sln",
+    "dotnet.codeLens.enableReferencesCodeLens": false
 }

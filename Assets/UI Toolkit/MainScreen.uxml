@@ -1,0 +1,18 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="Screen" style="flex-grow: 1; flex-direction: row;">
+        <ui:VisualElement name="LeftScreen" style="flex-grow: 1;">
+            <ui:VisualElement name="TopLeft" style="flex-grow: 1;">
+                <ui:Label tabindex="-1" text="Label" parse-escape-sequences="true" display-tooltip-when-elided="true" />
+            </ui:VisualElement>
+            <ui:VisualElement name="BottomLeft" style="flex-grow: 1; flex-direction: column-reverse; flex-wrap: nowrap; align-items: flex-start; justify-content: flex-start;">
+                <ui:Button text="Jump" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Jump" style="-unity-font: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=c50e7e8b0005abf428c72a235b9cd68a&amp;type=3#NotInter-Regular&quot;); -unity-font-style: bold; color: rgb(255, 255, 255); width: 30%; font-size: 50%; height: 30%; margin-left: 5%; margin-bottom: 5%;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="RightScreen" style="flex-grow: 1;">
+            <ui:VisualElement name="TopRight" style="flex-grow: 1;" />
+            <ui:VisualElement name="BottomRight" style="flex-grow: 1; flex-direction: row-reverse; flex-wrap: nowrap; justify-content: flex-start; align-self: auto; align-items: flex-end;">
+                <ui:Button text="Slide" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Slide" style="-unity-font: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&amp;guid=c50e7e8b0005abf428c72a235b9cd68a&amp;type=3#NotInter-Regular&quot;); -unity-font-style: bold; color: rgb(255, 255, 255); width: 30%; font-size: 50%; height: 30%; margin-left: 4px; margin-bottom: 5%; margin-right: 4%;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

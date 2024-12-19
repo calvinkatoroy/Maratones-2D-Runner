@@ -6,7 +6,11 @@ public class Player : MonoBehaviour
 {
     public float gravity = -200;
     public Vector2 velocity;
+    public float maxAcceleration = 10;
+    public float acceleration = 10;
+    public float distance = 0;
     public float jumpVelocity = 40;
+    public float maxVelocity = 100;
     public float groundHeight = 6;
     public bool isGrounded = false;
 
@@ -83,6 +87,20 @@ public class Player : MonoBehaviour
                 isGrounded = true;
                 holdJumpTimer = 0;  // Reset jump timer when grounded
                 velocity.y = 0;     // Reset vertical velocity
+            }
+        }
+
+        distance += velocity.x * Time.fixedDeltaTime;
+
+        if(isGrounded)
+        {
+            float velocityRatio = velocity.x / maxVelocity;
+            acceleration = maxAcceleration * (1 - velocityRatio);
+
+            velocity.x += acceleration * Time.fixedDeltaTime;
+            if (velocity.x >= maxVelocity)
+            {
+                velocity.x = maxVelocity;
             }
         }
 

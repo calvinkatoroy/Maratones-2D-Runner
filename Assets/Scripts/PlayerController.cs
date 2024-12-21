@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public float holdJumpTimer = 0;
     public bool isHoldingJump = false;
     public bool isGrounded;
+    public bool isFalling;
 
     void Start()
     {
@@ -62,6 +63,15 @@ public class PlayerController : MonoBehaviour
         if(isGrounded)
         {
             rb.velocity = new Vector2(5, rb.velocity.y);
+        }
+
+        if(rb.velocity.y < 0)
+        {
+            isFalling = true;
+        }
+        else
+        {
+            isFalling = false;
         }
     }
 

@@ -17,15 +17,23 @@ public class Player : MonoBehaviour
 
     void LateUpdate()
     {
-        if(playerMovement.isGrounded == true)
+        if(playerMovement.isJumping == true)
         {
-            animator.SetBool("IsJumping", false);
-            animator.SetBool("IsWalking", true);
+            if(playerMovement.isFalling == true)
+            {
+                animator.SetBool("IsFalling", true);
+            }
+            else
+            {
+                animator.SetBool("IsFalling", false);
+                animator.SetBool("IsJumping", true);
+            }
+            animator.SetBool("IsWalking", false);
         }
         else
         {
-            animator.SetBool("IsJumping", true);
-            animator.SetBool("IsWalking", false);
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsWalking", true);
         }
 
         if(transform.position.y <= CameraBottomEdge)

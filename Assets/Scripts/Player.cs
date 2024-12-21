@@ -6,11 +6,13 @@ public class Player : MonoBehaviour
 {
     PlayerController playerMovement;
     Animator animator;
+    private float CameraBottomEdge;
 
     void Start()
     {
         playerMovement = GetComponent<PlayerController>();
         animator = GameObject.Find("Player").GetComponent<Animator>();
+        CameraBottomEdge = Camera.main.transform.position.y - Camera.main.orthographicSize;
     }
 
     void LateUpdate()
@@ -24,6 +26,11 @@ public class Player : MonoBehaviour
         {
             animator.SetBool("IsJumping", true);
             animator.SetBool("IsWalking", false);
+        }
+
+        if(transform.position.y <= CameraBottomEdge)
+        {
+            Destroy(gameObject);
         }
     }
 

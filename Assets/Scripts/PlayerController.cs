@@ -8,12 +8,13 @@ public class PlayerController : MonoBehaviour
     public bool isJumping;
     public bool canDoubleJump;
     public bool spacePressed;
-    [SerializeField] public float jumpForce = 8;
+    public float jumpForce = 8f;
     public float maxHoldJumpTime = 0.2f;
     public float holdJumpTimer = 0;
     public bool isHoldingJump = false;
     public bool isGrounded;
     public bool isFalling;
+    public float speed = 5f;
 
     // --- Crouch Variables ---
     public float crouchHeight = 0.6f;
@@ -79,7 +80,7 @@ public class PlayerController : MonoBehaviour
         // Move horizontally if grounded
         if (isGrounded)
         {
-            rb.velocity = new Vector2(5, rb.velocity.y);
+            rb.velocity = new Vector2(speed, rb.velocity.y);
         }
 
         // Check if player is falling
@@ -110,6 +111,13 @@ public class PlayerController : MonoBehaviour
                 transform.localScale = normalHeight;
             }
         }
+
+        //make a list 1-3 for the powerups
+        //if the player collides with the powerup, add the powerup to the list
+        //if the player presses 1, activate the powerup
+        //if the player presses 2, activate the powerup
+        //if the player presses 3, activate the powerup
+        
     }
 
     void Jump()

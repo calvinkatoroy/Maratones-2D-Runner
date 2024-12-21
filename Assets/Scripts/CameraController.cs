@@ -10,13 +10,13 @@ public class CameraController : MonoBehaviour
     {
         GameObject player = GameObject.Find("Player");
         initialcameraY = -0.38f; //contoh initial camera position
-        transform.position = new Vector3(player.transform.position.x + 3f, player.transform.position.y + 3f, -10);
+        transform.position = new Vector3(player.transform.position.x + 5f, player.transform.position.y + 7f, -10);
     }
 
     // Update is called once per frame
     void Update()
     {
         GameObject player = GameObject.Find("Player");
-        transform.position = new Vector3(player.transform.position.x + 3f, Mathf.Clamp(player.transform.position.y, initialcameraY, player.transform.position.y), -10);
+        transform.position = new Vector3(player.transform.position.x + 5f, Mathf.Clamp(player.transform.position.y, initialcameraY +3f, player.transform.position.y), -10);
     }
 }

@@ -5,29 +5,34 @@ using UnityEngine;
 public class Parallax : MonoBehaviour
 {
 
-    public float depth = 1;
+    [SerializeField] public float depth;
+    public Vector3 spawnpoint;
+    public CameraController cameraController;
+    private float CameraLeftEdge;
 
-    Player player;
+    PlayerController player;
 
     private void Awake()
     {
-        player = GameObject.Find("Player").GetComponent<Player>();
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
+        spawnpoint = transform.position;
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+        CameraLeftEdge = Camera.main.transform.position.x - Camera.main.orthographicSize;
+        spawnpoint = new Vector3(transform.position.x, transform.position.y, transform.position.z);
     }
 
     // Update is called once per frame
     void Update()
     {
-        float realVelocity = player.velocity.x / depth;
-        Vector2 pos = transform.position;
+        float realVelocity = player.rb.velocity.x / depth;
+        Vector3 pos = transform.position;
 
         pos.x -= realVelocity * Time.fixedDeltaTime;
 
-        if (pos.x <= -20) { pos.x = 80; }
+        if (pos.x <= CameraLeftEdge) { pos = spawnpoint; }
 
         transform.position = pos;
     }

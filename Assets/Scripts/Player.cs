@@ -1,74 +1,47 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class Player : MonoBehaviour
 {
-    public Rigidbody2D rb;
-    public bool isJumping;
-    public bool canDoubleJump;
-    public bool spacePressed;
-    [SerializeField] public float jumpForce = 20;
-    public float maxHoldJumpTime = 0.2f;
-    public float holdJumpTimer = 0;
-    public bool isHoldingJump = false;
-    public bool isGrounded;
+    PlayerController playerMovement;
+    Animator animator;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        playerMovement = GetComponent<PlayerController>();
+        animator = GameObject.Find("Player").GetComponent<Animator>();
     }
 
-    void Update()
+    void LateUpdate()
     {
-        if(rb.velocity.y == 0 && !Input.GetKeyDown(KeyCode.Space))
+        if(playerMovement.isGrounded == true)
         {
-            isJumping = false;
-            canDoubleJump = false;
-            isGrounded = true;
+            animator.SetBool("IsJumping", false);
+            animator.SetBool("IsWalking", true);
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        else
         {
-            if (isGrounded) // First Jump
-            {
-                Jump();
-                isGrounded = false;
-                canDoubleJump = true; // Reset double jump ability
-            }
-            else if (canDoubleJump) // Double Jump
-            {
-                Jump();
-                canDoubleJump = false; // Consume double jump
-            }
-        }
-
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            isHoldingJump = false;
-        }
-
-         if (!isGrounded)
-        {
-            if (isHoldingJump)
-            {
-                holdJumpTimer += Time.fixedDeltaTime;
-                if (holdJumpTimer >= maxHoldJumpTime)
-                {
-                    isHoldingJump = false;
-                }
-            }
-        }
-
-        if(isGrounded)
-        {
-            rb.velocity = new Vector2(5, rb.velocity.y);
+            animator.SetBool("IsJumping", true);
+            animator.SetBool("IsWalking", false);
         }
     }
 
-    void Jump()
+    #region Singleton
+    public static Player Instance { get; private set; }
+    private void Awake()
     {
-        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        isJumping = true;
-        isGrounded = false;
+        if(Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+        }
+
+        DontDestroyOnLoad(this);
     }
+
+    #endregion
 }

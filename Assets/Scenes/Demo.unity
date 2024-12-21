@@ -2442,6 +2442,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2364586319556412239, guid: fcee49a8df3757b4e8903e60ee6a687f, type: 3}
+      propertyPath: KentutPrefab
+      value: 
+      objectReference: {fileID: 5704052127355345205, guid: 3ed21874afbb19444a22c412942268fb, type: 3}
     - target: {fileID: 3034027161969197244, guid: fcee49a8df3757b4e8903e60ee6a687f, type: 3}
       propertyPath: m_GravityScale
       value: 1.5

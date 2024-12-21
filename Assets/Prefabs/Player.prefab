@@ -205,4 +205,5 @@ MonoBehaviour:
   holdJumpTimer: 0
   isHoldingJump: 0
   isGrounded: 0
-  Player: {fileID: 662692896864685137}
+  isFalling: 0
+  KentutPrefab: {fileID: 5704052127355345205, guid: 3ed21874afbb19444a22c412942268fb, type: 3}

@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
     public bool isFalling;
 
+    public GameObject KentutPrefab;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -40,6 +42,8 @@ public class PlayerController : MonoBehaviour
             {
                 Jump();
                 canDoubleJump = false; // Consume double jump
+
+                Instantiate(KentutPrefab, transform.position, Quaternion.identity);
             }
         }
 

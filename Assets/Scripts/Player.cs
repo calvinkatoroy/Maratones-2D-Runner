@@ -1,57 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float gravity = -200f;
+    public float gravity = -200;
     public Vector2 velocity;
-    public float maxAcceleration = 10f;
-    public float acceleration = 10f;
-    public float distance = 0f;
-    public float jumpVelocity = 40f;
-    public float maxVelocity = 100f;
+    public float maxAcceleration = 10;
+    public float acceleration = 10;
+    public float distance = 0;
+    public float jumpVelocity = 40;
+    public float maxVelocity = 100;
+    public float groundHeight = 6;
     public bool isGrounded = false;
 
     public bool isHoldingJump = false;
     public float maxHoldJumpTime = 0.2f;
-    public float holdJumpTimer = 0f;
+    public float holdJumpTimer = 0;
 
     public bool canDoubleJump = true; // Allow double jump
 
     private Rigidbody2D rb;
     private BoxCollider2D boxCollider;
 
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
+        // Get references to Rigidbody2D and BoxCollider2D
         rb = GetComponent<Rigidbody2D>();
-        
-        // Find the child's "Body" GameObject and get the BoxCollider2D from it
-        Transform bodyTransform = transform.Find("Body");
-        if (bodyTransform != null)
-        {
-            boxCollider = bodyTransform.GetComponent<BoxCollider2D>();
-        }
-        else
-        {
-            Debug.LogWarning("Body child not found. Please ensure the child's name is 'Body' and it has a BoxCollider2D.");
-        }
+        boxCollider = GetComponent<BoxCollider2D>();
     }
 
-    private void Update()
+    // Update is called once per frame
+    void Update()
     {
-        // Handle Jump Input
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (isGrounded) // First jump
+            if (isGrounded) // First Jump
             {
                 Jump();
-                canDoubleJump = true;
+                isGrounded = false;
+                canDoubleJump = true; // Reset double jump ability
             }
-            else if (canDoubleJump) // Double jump
+            else if (canDoubleJump) // Double Jump
             {
                 Jump();
-                canDoubleJump = false;
+                canDoubleJump = false; // Consume double jump
             }
         }
 
@@ -64,49 +59,11 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 pos = rb.position;
+        Vector2 pos = transform.position;
 
-        // If the collider isn't found, just return to avoid errors
-        if (boxCollider == null)
+        // Apply gravity manually if not grounded
+        if (!isGrounded)
         {
-            rb.MovePosition(pos);
-            return;
-        }
-
-        // Calculate the ray origin based on the collider's size and offset
-        // pos is the player's parent transform position. We adjust by collider offset and half its height to get the bottom.
-        float colliderBottom = pos.y + boxCollider.offset.y - (boxCollider.size.y / 2f);
-        Vector2 rayOrigin = new Vector2(pos.x + boxCollider.offset.x, colliderBottom);
-
-        float rayDistance = 0.2f; // Small value to detect ground just below feet
-        RaycastHit2D hit2D = Physics2D.Raycast(rayOrigin, Vector2.down, rayDistance);
-
-        if (hit2D.collider != null && hit2D.collider.GetComponent<Ground>() != null)
-        {
-            // Player is on ground
-            isGrounded = true;
-            // Align the player with the top of the ground collider
-            pos.y = hit2D.collider.bounds.max.y - (boxCollider.offset.y - (boxCollider.size.y / 2f));
-            
-            // Apply horizontal acceleration while on ground
-            float velocityRatio = velocity.x / maxVelocity;
-            acceleration = maxAcceleration * (1 - velocityRatio);
-
-            velocity.x += acceleration * Time.fixedDeltaTime;
-            if (velocity.x > maxVelocity)
-            {
-                velocity.x = maxVelocity;
-            }
-
-            // Reset vertical velocity if grounded
-            velocity.y = 0f;
-        }
-        else
-        {
-            // Not grounded, apply gravity and vertical movement
-            isGrounded = false;
-
-            // Handle jump hold timer
             if (isHoldingJump)
             {
                 holdJumpTimer += Time.fixedDeltaTime;
@@ -116,31 +73,64 @@ public class Player : MonoBehaviour
                 }
             }
 
-            // If no longer holding jump, apply gravity
+            // Apply velocity changes
+            pos.y += velocity.y * Time.fixedDeltaTime;
+
             if (!isHoldingJump)
             {
                 velocity.y += gravity * Time.fixedDeltaTime;
             }
 
-            // Move the player vertically
-            pos.y += velocity.y * Time.fixedDeltaTime;
+            // Perform a raycast to check for collisions
+            Vector2 rayOrigin = new Vector2(pos.x + 0.7f, pos.y); // Correct offset calculation
+            Vector2 rayDirection = Vector2.down;
+            float rayDistance = Mathf.Abs(velocity.y * Time.fixedDeltaTime); // Correct ray distance calculation
+            RaycastHit2D hit2D = Physics2D.Raycast(rayOrigin, rayDirection, rayDistance);
+
+            if (hit2D.collider != null)
+            {
+                // Player is grounded
+                Ground ground = hit2D.collider.GetComponent<Ground>();
+                if (ground != null)
+                {
+                    pos.y = groundHeight;
+                    isGrounded = true;
+                }
+                Debug.DrawRay(rayOrigin, rayDirection * rayDistance, Color.red);
+            }
+            // Check if the player has landed on the ground
+            //if (pos.y <= groundHeight)
+            //{
+            //    pos.y = groundHeight;
+            //    isGrounded = true;
+            //    holdJumpTimer = 0;  // Reset jump timer when grounded
+            //    velocity.y = 0;     // Reset vertical velocity
+            //}
         }
 
-        // Move the player horizontally
         distance += velocity.x * Time.fixedDeltaTime;
-        pos.x += velocity.x * Time.fixedDeltaTime;
+
+        if(isGrounded)
+        {
+            float velocityRatio = velocity.x / maxVelocity;
+            acceleration = maxAcceleration * (1 - velocityRatio);
+
+            velocity.x += acceleration * Time.fixedDeltaTime;
+            if (velocity.x >= maxVelocity)
+            {
+                velocity.x = maxVelocity;
+            }
+        }
 
         // Apply the updated position to the Rigidbody2D
         rb.MovePosition(pos);
-
-        // Debug ray
-        Debug.DrawRay(rayOrigin, Vector2.down * rayDistance, Color.green);
     }
 
-    private void Jump()
+    // Jump Function
+    void Jump()
     {
-        velocity.y = jumpVelocity; // Set jump velocity
-        isHoldingJump = true;      // Enable hold jump
-        holdJumpTimer = 0f;        // Reset hold timer
+        velocity.y = jumpVelocity; // Apply jump velocity
+        isHoldingJump = true;      // Allow holding the jump key
+        holdJumpTimer = 0;         // Reset hold timer
     }
 }

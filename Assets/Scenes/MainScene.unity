@@ -159,6 +159,7 @@ MonoBehaviour:
   distance: 0
   jumpVelocity: 40
   maxVelocity: 100
+  groundHeight: 7
   isGrounded: 0
   isHoldingJump: 0
   maxHoldJumpTime: 0.2

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class powerup_invisible : MonoBehaviour
+public class powerup_gold : MonoBehaviour
 {
     public float powerupTime = 5f;
     public float powerupTimeLeft = 0f;
@@ -11,11 +11,6 @@ public class powerup_invisible : MonoBehaviour
         if (powerupTimeLeft > 0)
         {
             powerupTimeLeft -= Time.deltaTime;
-            if (powerupTimeLeft <= 0)
-            {
-                playerCollider.enabled = true;
-                Destroy(gameObject);
-            }
         }
     }
 

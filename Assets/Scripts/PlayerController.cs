@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
-    // --- Jump Variables ---
+    [Header("Jump Variables")]
     public Rigidbody2D rb;
     public bool isJumping;
     public bool canDoubleJump;
@@ -15,11 +15,12 @@ public class PlayerController : MonoBehaviour
     public bool isGrounded;
     public bool isFalling;
 
-    // --- Crouch Variables ---
+    [Header("Crouch Variables")]
     public float crouchHeight = 0.6f;
     private Vector2 normalHeight;
     private float yInput;
 
+    [Header("Double Jump Variables")]
     public GameObject KentutPrefab;
 
     void Start()
@@ -34,14 +35,14 @@ public class PlayerController : MonoBehaviour
         // -----------------------
         // Ground / Jump Handling
         // -----------------------
-        if (rb.velocity.y == 0 && !Input.GetKeyDown(KeyCode.Space))
+        if (rb.velocity.y == 0 && !Input.GetKeyDown(KeyCode.Space) || yInput < 0)
         {
             isJumping = false;
             canDoubleJump = false;
             isGrounded = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (yInput > 0 || Input.GetKeyDown(KeyCode.Space))
         {
             if (isGrounded) // First Jump
             {
@@ -49,7 +50,7 @@ public class PlayerController : MonoBehaviour
                 isGrounded = false;
                 canDoubleJump = true; // Reset double jump ability
             }
-            else if (canDoubleJump) // Double Jump
+            else if (canDoubleJump || yInput > 0) // Double Jump
             {
                 Jump();
                 canDoubleJump = false; // Consume double jump
@@ -58,7 +59,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Stop "holding" the jump if space key is released
-        if (Input.GetKeyUp(KeyCode.Space))
+        if (yInput > 0 || Input.GetKeyUp(KeyCode.Space))
         {
             isHoldingJump = false;
         }
@@ -98,7 +99,7 @@ public class PlayerController : MonoBehaviour
         yInput = Input.GetAxisRaw("Vertical");
 
         // If pressing down while on the ground, crouch
-        if (yInput < 0 && isGrounded)
+        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || yInput < 0) && isGrounded)
         {
             transform.localScale = new Vector2(normalHeight.x, crouchHeight);
         }

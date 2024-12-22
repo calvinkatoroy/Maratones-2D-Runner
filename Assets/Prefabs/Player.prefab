@@ -117,10 +117,9 @@ GameObject:
   - component: {fileID: 4244173645934671903}
   - component: {fileID: 3034027161969197244}
   - component: {fileID: 95466302063109267}
-  - component: {fileID: 662692896864685137}
   - component: {fileID: 2364586319556412239}
   - component: {fileID: 330228333774328794}
-  - component: {fileID: 2699303412558275858}
+  - component: {fileID: 2279605232547233621}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -192,18 +191,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &662692896864685137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9120846538677465927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b561759cb6327c4783c8cbcbc427798, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2364586319556412239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b44176f75e2e5746aad47ccf893b1f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
+  rb: {fileID: 3034027161969197244}
   isJumping: 0
   canDoubleJump: 0
   spacePressed: 0
@@ -273,7 +260,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.69636357, y: 1.0074972}
   m_EdgeRadius: 0
---- !u!114 &2699303412558275858
+--- !u!114 &2279605232547233621
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -282,8 +269,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 9120846538677465927}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98a99a76e9b27d148924376b69fa06dd, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b561759cb6327c4783c8cbcbc427798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crouchHeight: 0.6
-  player: {fileID: 2364586319556412239}

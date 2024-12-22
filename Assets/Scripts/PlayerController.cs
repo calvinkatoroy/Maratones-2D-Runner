@@ -14,43 +14,95 @@ public class PlayerController : MonoBehaviour
     public bool isHoldingJump = false;
     public bool isGrounded;
     public bool isFalling;
+    public bool isSliding;
 
     [Header("Crouch Variables")]
-    public float crouchHeight = 0.6f;
+    public float crouchHeight = 0.5f; // Adjusted to match collider size
     private Vector2 normalHeight;
+    private Vector2 normalOffset;
     private float yInput;
 
     [Header("Double Jump Variables")]
     public GameObject KentutPrefab;
 
+    private Animator animator;
+    private Transform playerSprite; // Reference to PlayerSprite
+    private BoxCollider2D boxCollider; // Reference to Player's BoxCollider
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        // Record the initial scale so we can return to it after crouching
-        normalHeight = transform.localScale;
+        boxCollider = GetComponent<BoxCollider2D>();
+        playerSprite = transform.Find("PlayerSprite"); // Find the child GameObject
+        if (playerSprite != null)
+        {
+            animator = playerSprite.GetComponent<Animator>(); // Get the Animator on PlayerSprite
+        }
+        else
+        {
+            Debug.LogError("PlayerSprite GameObject not found!");
+        }
+        normalHeight = new Vector2(boxCollider.size.x, boxCollider.size.y);
+        normalOffset = new Vector2(boxCollider.offset.x, boxCollider.offset.y);
     }
 
     void Update()
     {
-        // -----------------------
-        // Ground / Jump Handling
-        // -----------------------
-        if (rb.velocity.y == 0 && !Input.GetKeyDown(KeyCode.Space) || yInput < 0)
+        // Ground Check
+        if (Mathf.Abs(rb.velocity.y) < 0.1f)
+        {
+            isGrounded = true;
+            isJumping = false;
+            isFalling = false;
+        }
+        else if (rb.velocity.y > 0)
+        {
+            isJumping = true;
+            isFalling = false;
+            isGrounded = false;
+        }
+        else if (rb.velocity.y < 0)
         {
             isJumping = false;
-            canDoubleJump = false;
-            isGrounded = true;
+            isFalling = true;
         }
 
-        if (yInput > 0 || Input.GetKeyDown(KeyCode.Space))
+        // Walking logic
+        bool isWalking = Mathf.Abs(rb.velocity.x) > 0.1f && isGrounded;
+
+        // Sliding logic
+        yInput = Input.GetAxisRaw("Vertical");
+        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isGrounded)
         {
-            if (isGrounded) // First Jump
+            boxCollider.size = new Vector2(normalHeight.x, crouchHeight);
+            boxCollider.offset = new Vector2(normalOffset.x, 0.253f); // Adjusted offset for sliding
+            isSliding = true;
+        }
+        else
+        {
+            boxCollider.size = normalHeight;
+            boxCollider.offset = normalOffset;
+            isSliding = false;
+        }
+
+        // Update Animator parameters
+        if (animator != null)
+        {
+            animator.SetBool("IsWalking", isWalking);
+            animator.SetBool("IsJumping", isJumping);
+            animator.SetBool("IsFalling", isFalling);
+            animator.SetBool("IsSliding", isSliding);
+        }
+
+        // Handle jumping
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isGrounded)
             {
                 Jump();
-                isGrounded = false;
-                canDoubleJump = true; // Reset double jump ability
+                canDoubleJump = true; // Allow double jump
             }
-            else if (canDoubleJump || yInput > 0) // Double Jump
+            else if (canDoubleJump)
             {
                 Jump();
                 canDoubleJump = false; // Consume double jump
@@ -59,21 +111,18 @@ public class PlayerController : MonoBehaviour
         }
 
         // Stop "holding" the jump if space key is released
-        if (yInput > 0 || Input.GetKeyUp(KeyCode.Space))
+        if (Input.GetKeyUp(KeyCode.Space))
         {
             isHoldingJump = false;
         }
 
         // Handle hold jump timer if player is in the air
-        if (!isGrounded)
+        if (!isGrounded && isHoldingJump)
         {
-            if (isHoldingJump)
+            holdJumpTimer += Time.deltaTime;
+            if (holdJumpTimer >= maxHoldJumpTime)
             {
-                holdJumpTimer += Time.fixedDeltaTime;
-                if (holdJumpTimer >= maxHoldJumpTime)
-                {
-                    isHoldingJump = false;
-                }
+                isHoldingJump = false;
             }
         }
 
@@ -81,35 +130,6 @@ public class PlayerController : MonoBehaviour
         if (isGrounded)
         {
             rb.velocity = new Vector2(5, rb.velocity.y);
-        }
-
-        // Check if player is falling
-        if (rb.velocity.y < 0)
-        {
-            isFalling = true;
-        }
-        else
-        {
-            isFalling = false;
-        }
-
-        // ---------------
-        // Crouch Handling
-        // ---------------
-        yInput = Input.GetAxisRaw("Vertical");
-
-        // If pressing down while on the ground, crouch
-        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || yInput < 0) && isGrounded)
-        {
-            transform.localScale = new Vector2(normalHeight.x, crouchHeight);
-        }
-        else
-        {
-            // Return to normal scale if not crouching
-            if (transform.localScale.y != normalHeight.y)
-            {
-                transform.localScale = normalHeight;
-            }
         }
     }
 

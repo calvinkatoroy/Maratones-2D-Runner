@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f8db4c39d21b4a143adf887bf8d14e65
+guid: 6b93610145e45314cbb14760e94a9553
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - DS-Digital
+  - 8-bit Arcade Out
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

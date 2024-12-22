@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7ad8e2a336f3b934789833756cc4a444
+guid: 36c32ad9391bf6f4cad6b572536eb487
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - DS-Digital
+  - 8-bit HUD
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

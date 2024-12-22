@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
         // Sliding logic
         yInput = Input.GetAxisRaw("Vertical");
-        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isGrounded)
+        if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.W) || yInput < 0) && isGrounded)
         {
             boxCollider.size = new Vector2(normalHeight.x, crouchHeight);
             boxCollider.offset = new Vector2(normalOffset.x, 0.253f); // Adjusted offset for sliding

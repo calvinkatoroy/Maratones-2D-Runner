@@ -65,6 +65,14 @@ public class PlayerController : MonoBehaviour
             {
                 isGrounded = false;
             }
+
+            if (hitGround.collider.CompareTag("Enemy") && rb.velocity.y < 0)
+            {
+                // Player is falling down and hit an enemy
+                Destroy(hitGround.collider.gameObject);  // Destroy the enemy
+                rb.velocity = new Vector2(rb.velocity.x, 2f);
+                // isGrounded = true;  
+            }
         }
 
         // Walking logic

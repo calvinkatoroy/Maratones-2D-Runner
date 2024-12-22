@@ -77,6 +77,7 @@ public class Timer : MonoBehaviour
 
         // Trigger game over logic
         Debug.Log("Game Over!");
+        Time.timeScale = 0f; // Pause the game
         // Optionally: Call another method to handle game over, e.g., show Game Over screen
     }
 }

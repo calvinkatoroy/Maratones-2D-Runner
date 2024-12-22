@@ -27,6 +27,11 @@ public class Parallax : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.timeScale == 0f)
+        {
+            return; // If the game is paused, stop updating the parallax
+        }
+        
         float realVelocity = player.rb.velocity.x / depth;
         Vector3 pos = transform.position;
 

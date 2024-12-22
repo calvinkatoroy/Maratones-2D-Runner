@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -24,15 +25,19 @@ public class PlayerController : MonoBehaviour
 
     [Header("Double Jump Variables")]
     public GameObject KentutPrefab;
+    public GameObject groundRayObject;
 
     private Animator animator;
     private Transform playerSprite; // Reference to PlayerSprite
     private BoxCollider2D boxCollider; // Reference to Player's BoxCollider
 
+    public LevelManager levelmanager;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+        isGrounded = false;
         playerSprite = transform.Find("PlayerSprite"); // Find the child GameObject
         if (playerSprite != null)
         {
@@ -48,27 +53,22 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // Ground Check
-        if (Mathf.Abs(rb.velocity.y) < 0.1f)
+        rb.velocity = new Vector2(5, rb.velocity.y);
+        RaycastHit2D hitGround = Physics2D.Raycast(groundRayObject.transform.position, -Vector2.up);
+        if (hitGround.collider != null)
         {
-            isGrounded = true;
-            isJumping = false;
-            isFalling = false;
-        }
-        else if (rb.velocity.y > 0)
-        {
-            isJumping = true;
-            isFalling = false;
-            isGrounded = false;
-        }
-        else if (rb.velocity.y < 0)
-        {
-            isJumping = false;
-            isFalling = true;
+            if (hitGround.distance < 0.1f)
+            {
+                isGrounded = true;
+            }
+            else
+            {
+                isGrounded = false;
+            }
         }
 
         // Walking logic
-        bool isWalking = Mathf.Abs(rb.velocity.x) > 0.1f && isGrounded;
+        // bool isWalking = Mathf.Abs(rb.velocity.x) > 0.1f && isGrounded;
 
         // Sliding logic
         yInput = Input.GetAxisRaw("Vertical");
@@ -85,17 +85,14 @@ public class PlayerController : MonoBehaviour
             isSliding = false;
         }
 
-        // Update Animator parameters
-        if (animator != null)
+        if (rb.velocity.y == 0 && !Input.GetKeyDown(KeyCode.Space))
         {
-            animator.SetBool("IsWalking", isWalking);
-            animator.SetBool("IsJumping", isJumping);
-            animator.SetBool("IsFalling", isFalling);
-            animator.SetBool("IsSliding", isSliding);
+            isJumping = false;
+            canDoubleJump = false; 
         }
 
         // Handle jumping
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W))
         {
             if (isGrounded)
             {
@@ -126,10 +123,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // Move horizontally if grounded
-        if (isGrounded)
+        if (rb.velocity.y < 0)
         {
-            rb.velocity = new Vector2(5, rb.velocity.y);
+            isFalling = true;
+        }
+        else
+        {
+            isFalling = false;
         }
     }
 
@@ -138,5 +138,15 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         isJumping = true;
         isGrounded = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Finish"))
+        {
+            levelmanager.levelcompleted = true;
+            levelmanager.level++;
+            Destroy(levelmanager.Pisang);
+        }
     }
 }

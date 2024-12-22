@@ -34,6 +34,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9061343763093105148}
+  - {fileID: 6873506954449785550}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &1175576539745781836
@@ -88,6 +89,8 @@ MonoBehaviour:
   isSliding: 0
   crouchHeight: 0.6
   KentutPrefab: {fileID: 5704052127355345205, guid: 3ed21874afbb19444a22c412942268fb, type: 3}
+  groundRayObject: {fileID: 4388867752415080827}
+  levelmanager: {fileID: 0}
 --- !u!61 &4539024551780459452
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -145,6 +148,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b561759cb6327c4783c8cbcbc427798, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4388867752415080827
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6873506954449785550}
+  m_Layer: 0
+  m_Name: GroundRay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6873506954449785550
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4388867752415080827}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.06, y: -0.002, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2886635799824725054}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6207061713974332293
 GameObject:
   m_ObjectHideFlags: 0

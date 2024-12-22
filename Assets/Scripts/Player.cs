@@ -11,12 +11,20 @@ public class Player : MonoBehaviour
     void Start()
     {
         playerMovement = GetComponent<PlayerController>();
-        animator = GameObject.Find("Player").GetComponent<Animator>();
+        animator = transform.Find("PlayerSprite").GetComponent<Animator>();
         CameraBottomEdge = Camera.main.transform.position.y - Camera.main.orthographicSize;
     }
 
     void LateUpdate()
     {
+        if (animator != null)
+        {
+            // animator.SetBool("IsWalking", playerMovement.isWalking);
+            animator.SetBool("IsJumping", playerMovement.isJumping);
+            animator.SetBool("IsFalling", playerMovement.isFalling);
+            animator.SetBool("IsSliding", playerMovement.isSliding);
+        }
+
         if(playerMovement.isJumping == true)
         {
             if(playerMovement.isFalling == true)

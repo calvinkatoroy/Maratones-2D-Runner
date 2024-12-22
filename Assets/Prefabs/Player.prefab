@@ -89,7 +89,8 @@ MonoBehaviour:
   isSliding: 0
   crouchHeight: 0.6
   KentutPrefab: {fileID: 5704052127355345205, guid: 3ed21874afbb19444a22c412942268fb, type: 3}
-  groundRayObject: {fileID: 0}
+  groundRayObject: {fileID: 4388867752415080827}
+  levelmanager: {fileID: 0}
 --- !u!61 &4539024551780459452
 BoxCollider2D:
   m_ObjectHideFlags: 0

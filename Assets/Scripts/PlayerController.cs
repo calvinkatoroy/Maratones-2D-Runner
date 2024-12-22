@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -29,6 +30,8 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private Transform playerSprite; // Reference to PlayerSprite
     private BoxCollider2D boxCollider; // Reference to Player's BoxCollider
+
+    public LevelManager levelmanager;
 
     void Start()
     {
@@ -89,7 +92,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Handle jumping
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.W))
         {
             if (isGrounded)
             {
@@ -135,5 +138,15 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         isJumping = true;
         isGrounded = false;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Finish"))
+        {
+            levelmanager.levelcompleted = true;
+            levelmanager.level++;
+            Destroy(levelmanager.Pisang);
+        }
     }
 }

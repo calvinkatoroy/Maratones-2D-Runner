@@ -9,7 +9,9 @@ public class Timer : MonoBehaviour
 
     private Label timerLabel;
     private float currentTime;
-    private bool isGameOver = false;
+    public bool isGameOver = false;
+
+    public GameObject player; 
 
     void Start()
     {
@@ -32,6 +34,12 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
+        if(player == null)
+        {
+            isGameOver = true;
+            GameOver();
+        }
+
         if (isGameOver) return; // Stop updating if game is over
 
         // Decrease time

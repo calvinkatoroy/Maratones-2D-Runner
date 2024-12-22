@@ -22,6 +22,7 @@ public class Parallax : MonoBehaviour
     {
         CameraLeftEdge = Camera.main.transform.position.x - Camera.main.orthographicSize;
         spawnpoint = new Vector3(transform.position.x, transform.position.y, transform.position.z);
+        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame

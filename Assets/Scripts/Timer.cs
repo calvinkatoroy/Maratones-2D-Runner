@@ -8,14 +8,17 @@ public class Timer : MonoBehaviour
     public Color warningColor = Color.red; // Label color when 10 seconds remain
 
     private Label timerLabel;
-    private float currentTime;
+    public float currentTime;
     public bool isGameOver = false;
+
+    public AudioManager audioManager;
 
     public GameObject player; 
 
     void Start()
     {
         // Get the root UI document
+        DontDestroyOnLoad(gameObject);
         var uiDocument = GetComponent<UIDocument>();
         var root = uiDocument.rootVisualElement;
 
@@ -48,7 +51,7 @@ public class Timer : MonoBehaviour
         // Check if time is up
         if (currentTime <= 0)
         {
-            currentTime = 0;
+            currentTime = -1;
             GameOver();
         }
 
@@ -71,13 +74,18 @@ public class Timer : MonoBehaviour
         timerLabel.text = $"{minutes:D2}:{seconds:D2}";
     }
 
-    private void GameOver()
+    public void GameOver()
     {
         isGameOver = true;
-
+        
+        audioManager.PlaySFX(audioManager.GameOver);
         // Trigger game over logic
         Debug.Log("Game Over!");
         Time.timeScale = 0f; // Pause the game
         // Optionally: Call another method to handle game over, e.g., show Game Over screen
+    }
+
+    public void addTimer(float addTime){
+        currentTime += addTime;
     }
 }

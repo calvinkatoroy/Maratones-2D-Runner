@@ -8,11 +8,24 @@ public class AudioManager : MonoBehaviour
     public AudioSource audioSource; // Reference to the AudioSource that will play background music
     public AudioClip[] levelMusic;  // Array to store music clips for different levels
 
-    private int currentLevel = -1;   // Track the current level
+    public AudioSource SFXSource; // Reference to the AudioSource that will play sound effects
+    public AudioClip SFXClips; // Array to store sound effect clips
+
+    public LevelManager levelManager; // Reference to the LevelManager to get the current level
     private bool isMusicPlaying = false;
+    private int currentLevel = -1; // Default value to ensure the first level music is played
+
+    public AudioClip GameOver;
+    public AudioClip StageClear;
+    public AudioClip getItem;
+    public AudioClip jump;
+    public AudioClip hurt;
 
     void Awake()
     {
+        levelManager = FindObjectOfType<LevelManager>(); // Find the LevelManager in the scene
+        currentLevel = levelManager.level;
+        Debug.Log("Level: " + currentLevel);
         // Ensure there is only one AudioManager
         if (instance == null)
         {
@@ -36,10 +49,9 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         // Start playing music for the first level or load default music if needed
-        if (levelMusic.Length > 0)
-        {
-            PlayMusicForLevel(0); // Play music for level 0 initially
-        }
+        audioSource.clip = levelMusic[currentLevel];
+        audioSource.Play();
+        isMusicPlaying = true;
     }
 
     // Method to update the music based on the level
@@ -63,48 +75,8 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    // Optionally, fade in music
-    public void FadeInMusic(float fadeDuration = 1f)
+    public void PlaySFX(AudioClip clip)
     {
-        StartCoroutine(FadeInCoroutine(fadeDuration));
-    }
-
-    private IEnumerator FadeInCoroutine(float fadeDuration)
-    {
-        audioSource.volume = 0f;
-        audioSource.Play();
-        float targetVolume = 1f;
-        float timeElapsed = 0f;
-
-        while (timeElapsed < fadeDuration)
-        {
-            audioSource.volume = Mathf.Lerp(0f, targetVolume, timeElapsed / fadeDuration);
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        audioSource.volume = targetVolume;  // Ensure the volume is set to 1 at the end
-    }
-
-    // Optional: Fade out music
-    public void FadeOutMusic(float fadeDuration = 1f)
-    {
-        StartCoroutine(FadeOutCoroutine(fadeDuration));
-    }
-
-    private IEnumerator FadeOutCoroutine(float fadeDuration)
-    {
-        float startVolume = audioSource.volume;
-        float timeElapsed = 0f;
-
-        while (timeElapsed < fadeDuration)
-        {
-            audioSource.volume = Mathf.Lerp(startVolume, 0f, timeElapsed / fadeDuration);
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        audioSource.volume = 0f;
-        audioSource.Stop();  // Stop the music after fading out
+        SFXSource.PlayOneShot(clip);
     }
 }

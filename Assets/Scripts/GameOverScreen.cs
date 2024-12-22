@@ -10,6 +10,11 @@ public class GameOverScreen : MonoBehaviour
     public UIDocument timer;
     public LevelManager levelmanager;
 
+    void Start()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     void OnEnable()
     {
         var root = uiDocument.rootVisualElement;

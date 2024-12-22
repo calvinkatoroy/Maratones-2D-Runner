@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="Container" style="flex-grow: 1; flex-direction: row; display: flex; background-color: rgba(0, 0, 0, 0); visibility: visible; overflow: visible; transition-timing-function: ease-in-sine; transition-duration: 1s; transition-delay: 0.5s; opacity: 1;">
+        <ui:Label tabindex="-1" text="3" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Countdown" style="position: absolute; top: 209px; left: 85px; height: 20%; width: 80%; -unity-text-align: upper-center; -unity-font-style: bold; color: rgb(255, 255, 255); font-size: 80%; right: 100px; bottom: 220px; opacity: 1;" />
+        <ui:VisualElement name="Screen" style="flex-grow: 1; flex-direction: row; display: flex; background-color: rgba(0, 0, 0, 0); visibility: visible; overflow: visible; transition-timing-function: ease-in-sine; transition-duration: 1s; transition-delay: 0.5s; opacity: 0.3;" />
+    </ui:VisualElement>
+</ui:UXML>

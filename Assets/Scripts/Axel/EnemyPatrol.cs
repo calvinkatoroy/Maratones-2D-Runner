@@ -13,7 +13,7 @@ public class EnemyPatrol : MonoBehaviour
 
     private Vector3 currentTargetPosition; // The current target position (either pointA or pointB)
     private Animator animator;
-    private Transform player;
+    public Transform player;
     private CapsuleCollider2D enemyCollider;
 
     public int speed = 3;

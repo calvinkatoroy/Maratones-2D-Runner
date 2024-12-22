@@ -6,10 +6,18 @@ public class LevelManager : MonoBehaviour
     public GameObject Player;
     public bool levelcompleted = false;
     public int level = 0;
+
+    public Countdown countdownLabel;
  
+    void Awake()
+    {
+        StartCoroutine(countdownLabel.StartCountdown(countdownLabel.countdownLabel));
+        Time.timeScale = 1; // Make sure the game is running
+    }
+
     void Start()
     {
-        
+        DontDestroyOnLoad(gameObject);
     }
 
     void Update()

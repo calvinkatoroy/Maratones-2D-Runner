@@ -69,7 +69,7 @@ public class EnemyJump : MonoBehaviour
     // You can use this method to check for landing and reset behavior (if needed)
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        if (collision.gameObject.CompareTag("Terrain"))
         {
             // Reset the jumping flag when landing on the ground
             isJumping = false;

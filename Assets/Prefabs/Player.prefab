@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4221929327053969074}
   - component: {fileID: 4539024551780459452}
   - component: {fileID: 8341728689777025088}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
@@ -87,10 +87,13 @@ MonoBehaviour:
   isGrounded: 0
   isFalling: 0
   isSliding: 0
+  speed: 3
   crouchHeight: 0.6
   KentutPrefab: {fileID: 5704052127355345205, guid: 3ed21874afbb19444a22c412942268fb, type: 3}
   groundRayObject: {fileID: 4388867752415080827}
   levelmanager: {fileID: 0}
+  isInvisible: 0
+  timer: {fileID: 0}
 --- !u!61 &4539024551780459452
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -274,7 +277,7 @@ Animator:
   m_GameObject: {fileID: 6207061713974332293}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9ba607ade744bc044b903ca897ab87bd, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3e9c9abbd842ae843b0e225c8e1d5944, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

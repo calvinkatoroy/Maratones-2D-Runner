@@ -1,6 +1,8 @@
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -17,6 +19,8 @@ public class PlayerController : MonoBehaviour
     public bool isFalling;
     public bool isSliding;
 
+    public float speed = 5f;
+
     [Header("Crouch Variables")]
     public float crouchHeight = 0.5f; // Adjusted to match collider size
     private Vector2 normalHeight;
@@ -32,6 +36,12 @@ public class PlayerController : MonoBehaviour
     private BoxCollider2D boxCollider; // Reference to Player's BoxCollider
 
     public LevelManager levelmanager;
+
+    [Header("Powerup Variables")]
+    public bool isInvisible = false;
+
+    public UIDocument timer;
+    AudioManager audioManager;
 
     void Start()
     {
@@ -53,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        rb.velocity = new Vector2(5, rb.velocity.y);
+        rb.velocity = new Vector2(speed, rb.velocity.y);
         RaycastHit2D hitGround = Physics2D.Raycast(groundRayObject.transform.position, -Vector2.up);
         if (hitGround.collider != null)
         {
@@ -66,7 +76,7 @@ public class PlayerController : MonoBehaviour
                 isGrounded = false;
             }
 
-            if (hitGround.collider.CompareTag("Enemy") && rb.velocity.y < 0)
+            if (hitGround.collider.CompareTag("Enemy") && rb.velocity.y < 0 && hitGround.collider.gameObject.layer != 10)
             {
                 // Player is falling down and hit an enemy
                 Destroy(hitGround.collider.gameObject);  // Destroy the enemy
@@ -144,6 +154,8 @@ public class PlayerController : MonoBehaviour
     void Jump()
     {
         rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        audioManager = timer.GetComponent<Timer>().audioManager;
+        audioManager.PlaySFX(audioManager.jump);
         isJumping = true;
         isGrounded = false;
     }
@@ -154,7 +166,23 @@ public class PlayerController : MonoBehaviour
         {
             levelmanager.levelcompleted = true;
             levelmanager.level++;
+            audioManager = timer.GetComponent<Timer>().audioManager;
+            audioManager.PlaySFX(audioManager.StageClear);
             Destroy(levelmanager.Pisang);
+            Time.timeScale = 0;
+        }
+
+        if(!isInvisible && collision.gameObject.CompareTag("Enemy"))
+        {
+            audioManager = timer.GetComponent<Timer>().audioManager;
+            audioManager.PlaySFX(audioManager.hurt);
+            timer.GetComponent<Timer>().currentTime -= 2;
+            Debug.Log("Skill Issue lu");
+            Debug.Log("Player Hit an Enemy");
+        }
+        else if(collision.gameObject.CompareTag("Ranjau"))
+        {
+            timer.GetComponent<Timer>().GameOver();
         }
     }
 }

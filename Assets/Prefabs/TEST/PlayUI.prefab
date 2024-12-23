@@ -1,0 +1,127 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4923741902952634900
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1849115472747520881}
+  - component: {fileID: 6077551766785892229}
+  - component: {fileID: 7001986907627469377}
+  - component: {fileID: 7333778047760024909}
+  - component: {fileID: 5118890214136678677}
+  - component: {fileID: 774811001068315576}
+  m_Layer: 5
+  m_Name: PlayUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1849115472747520881
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4923741902952634900}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6077551766785892229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4923741902952634900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: e85c1b6b7214e3c47af00b37c099d77f, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 23b7caa6a926acb47983f5dc158c8e8c, type: 3}
+  m_SortingOrder: 0
+--- !u!114 &7001986907627469377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4923741902952634900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8c01b7048f4d042a3baf4d41a6b6ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiDocument: {fileID: 6077551766785892229}
+  buttonConfigs:
+  - buttonName: JumpButton
+    defaultSprite: {fileID: -2104772461, guid: f164e73d3a132de41a13dd18d7476765, type: 3}
+    pressedSprite: {fileID: -817220781, guid: f164e73d3a132de41a13dd18d7476765, type: 3}
+  triggerKeys: 200000001101000077000000
+--- !u!114 &7333778047760024909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4923741902952634900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8c01b7048f4d042a3baf4d41a6b6ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiDocument: {fileID: 6077551766785892229}
+  buttonConfigs:
+  - buttonName: SlideButton
+    defaultSprite: {fileID: 1382188933, guid: f164e73d3a132de41a13dd18d7476765, type: 3}
+    pressedSprite: {fileID: 1736318474, guid: f164e73d3a132de41a13dd18d7476765, type: 3}
+  triggerKeys: 1201000073000000300100002f010000
+--- !u!114 &5118890214136678677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4923741902952634900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e8c01b7048f4d042a3baf4d41a6b6ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiDocument: {fileID: 6077551766785892229}
+  buttonConfigs:
+  - buttonName: PauseButton
+    defaultSprite: {fileID: -1944303967, guid: 5f7829b94ce5c8747a695cceadc0d42c, type: 3}
+    pressedSprite: {fileID: 1019858147, guid: 5f7829b94ce5c8747a695cceadc0d42c, type: 3}
+  triggerKeys: 1b00000013000000
+--- !u!114 &774811001068315576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4923741902952634900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 782a6dfad9907c34d831cf8c2a6147dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameDurationInSeconds: 15
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  warningColor: {r: 1, g: 0, b: 0, a: 1}
+  currentTime: 0
+  isGameOver: 0
+  audioManager: {fileID: 0}
+  player: {fileID: 0}

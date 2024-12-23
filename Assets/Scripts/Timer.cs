@@ -1,35 +1,36 @@
 using UnityEngine;
-using UnityEngine.UIElements;
+using TMPro; // Import TextMeshPro namespace
 
 public class Timer : MonoBehaviour
 {
+    [Header("Timer Settings")]
     public int gameDurationInSeconds = 10; // Total game duration
     public Color normalColor = Color.white; // Default label color
     public Color warningColor = Color.red; // Label color when 10 seconds remain
 
-    private Label timerLabel;
+    [Header("UI Components")]
+    public TextMeshProUGUI timerText; // Reference to the TextMeshProUGUI for the timer
+
+    [Header("Game State")]
     public float currentTime;
     public bool isGameOver = false;
 
+    [Header("Audio Manager")]
     public AudioManager audioManager;
 
-    public GameObject player; 
+    [Header("Player")]
+    public GameObject player; // Reference to the player GameObject
 
     void Start()
     {
-        // Get the root UI document
-        DontDestroyOnLoad(gameObject);
-        var uiDocument = GetComponent<UIDocument>();
-        var root = uiDocument.rootVisualElement;
-
-        // Find the label
-        timerLabel = root.Q<Label>("PlayTimerLabel");
-
         // Initialize time
         currentTime = gameDurationInSeconds;
 
         // Set initial color
-        timerLabel.style.color = normalColor;
+        if (timerText != null)
+        {
+            timerText.color = normalColor;
+        }
 
         // Update the timer label initially
         UpdateTimerLabel();
@@ -37,13 +38,13 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        if(player == null)
+        if (player == null)
         {
             isGameOver = true;
             GameOver();
         }
 
-        if (isGameOver) return; // Stop updating if game is over
+        if (isGameOver) return; // Stop updating if the game is over
 
         // Decrease time
         currentTime -= Time.deltaTime;
@@ -51,41 +52,48 @@ public class Timer : MonoBehaviour
         // Check if time is up
         if (currentTime <= 0)
         {
-            currentTime = -1;
+            currentTime = 0;
             GameOver();
         }
 
         // Check if warning time is reached
-        if (currentTime <= 10 && timerLabel.style.color != warningColor)
+        if (currentTime <= 10 && timerText.color != warningColor)
         {
-            timerLabel.style.color = warningColor; // Change label color to red
+            timerText.color = warningColor; // Change label color to red
         }
 
-        // Update the label
+        // Update the timer text
         UpdateTimerLabel();
     }
 
     private void UpdateTimerLabel()
     {
+        if (timerText == null) return;
+
         // Format time as MM:SS
         int minutes = Mathf.FloorToInt(currentTime / 60);
         int seconds = Mathf.FloorToInt(currentTime % 60);
 
-        timerLabel.text = $"{minutes:D2}:{seconds:D2}";
+        timerText.text = $"{minutes:D2}:{seconds:D2}";
     }
 
     public void GameOver()
     {
-        isGameOver = true;
-        
-        audioManager.PlaySFX(audioManager.GameOver);
-        // Trigger game over logic
         Debug.Log("Game Over!");
-        Time.timeScale = 0f; // Pause the game
-        // Optionally: Call another method to handle game over, e.g., show Game Over screen
+
+        // Check if the player exists and call the HandleDeath method
+        if (player != null)
+        {
+            player.GetComponent<Player>().HandleDeath();
+        }
+        else
+        {
+            Debug.LogError("Player GameObject is null! Cannot call HandleDeath.");
+        }
     }
 
-    public void addTimer(float addTime){
+    public void AddTimer(float addTime)
+    {
         currentTime += addTime;
     }
 }

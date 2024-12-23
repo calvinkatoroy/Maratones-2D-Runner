@@ -17,7 +17,7 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        
     }
 
     void Update()

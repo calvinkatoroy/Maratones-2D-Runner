@@ -12,7 +12,7 @@ public class GameOverScreen : MonoBehaviour
 
     void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        
     }
 
     void OnEnable()

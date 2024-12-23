@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -33,20 +34,21 @@ public class PlayerController : MonoBehaviour
 
     private Animator animator;
     private Transform playerSprite; // Reference to PlayerSprite
-    private BoxCollider2D boxCollider; // Reference to Player's BoxCollider
+    private CapsuleCollider2D capsuleCollider; // Reference to Player's capsuleCollider
 
     public LevelManager levelmanager;
 
     [Header("Powerup Variables")]
     public bool isInvisible = false;
 
-    public UIDocument timer;
+    [Header("Timer")]
+    public TextMeshProUGUI timer;
     AudioManager audioManager;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        boxCollider = GetComponent<BoxCollider2D>();
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
         isGrounded = false;
         playerSprite = transform.Find("PlayerSprite"); // Find the child GameObject
         if (playerSprite != null)
@@ -57,8 +59,8 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("PlayerSprite GameObject not found!");
         }
-        normalHeight = new Vector2(boxCollider.size.x, boxCollider.size.y);
-        normalOffset = new Vector2(boxCollider.offset.x, boxCollider.offset.y);
+        normalHeight = new Vector2(capsuleCollider.size.x, capsuleCollider.size.y);
+        normalOffset = new Vector2(capsuleCollider.offset.x, capsuleCollider.offset.y);
     }
 
     void Update()
@@ -92,14 +94,14 @@ public class PlayerController : MonoBehaviour
         yInput = Input.GetAxisRaw("Vertical");
         if ((Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) && isGrounded)
         {
-            boxCollider.size = new Vector2(normalHeight.x, crouchHeight);
-            boxCollider.offset = new Vector2(normalOffset.x, 0.253f); // Adjusted offset for sliding
+            capsuleCollider.size = new Vector2(normalHeight.x, crouchHeight);
+            capsuleCollider.offset = new Vector2(normalOffset.x, 0.253f); // Adjusted offset for sliding
             isSliding = true;
         }
         else
         {
-            boxCollider.size = normalHeight;
-            boxCollider.offset = normalOffset;
+            capsuleCollider.size = normalHeight;
+            capsuleCollider.offset = normalOffset;
             isSliding = false;
         }
 

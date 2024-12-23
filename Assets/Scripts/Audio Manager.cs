@@ -37,9 +37,6 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        // Do not destroy the AudioManager between scenes
-        DontDestroyOnLoad(gameObject);
-
         if (audioSource == null)
         {
             audioSource = GetComponent<AudioSource>(); // Try to get AudioSource if it's not set manually

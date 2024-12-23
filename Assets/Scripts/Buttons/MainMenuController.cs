@@ -3,59 +3,80 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour
 {
-    // Assign these in the Inspector
-    public AudioSource buttonClickAudioSource; // General button click audio
-    public AudioSource monkeyAudioSource;     // Exclusive audio for MONKEY button
-
-    private bool isMuted = false;
+    public AudioSource buttonClickAudioSource;
+    public AudioSource SUARAMONYETYESYES;
+    public GameObject helpPanel; // Reference to the Help Panel
+    public GameObject mainMenuButtons; // Reference to the Main Menu Buttons
 
     public void StartGame()
     {
         PlayButtonSound();
-        // Load the game scene (replace "Level 1" with your scene name)
-        // SceneManager.LoadScene("Level 1");
+        SceneManager.LoadScene("Level 1"); // Replace with your scene name
     }
 
     public void MONKEY()
     {
-        if (monkeyAudioSource != null)
-        {
-            monkeyAudioSource.Play();
-        }
-        else
-        {
-            Debug.LogWarning("MONKEY AudioSource is not assigned!");
-        }
-    }
-
-    public void MuteSound()
-    {
-        isMuted = !isMuted;
-        AudioListener.pause = isMuted;
-        Debug.Log($"Sound muted: {isMuted}");
+        MONYETYESYES();
+        Debug.Log("Monkey sound activated!");
     }
 
     public void ExitGame()
     {
         PlayButtonSound();
-        Debug.Log("Exiting game...");
-        Application.Quit();
+        SceneController.instance.ExitScene("ExitMenu");
     }
 
     public void HelpMenu()
     {
         PlayButtonSound();
-        // Load the help menu scene (replace "HelpMenu" with your scene name)
-        // SceneManager.LoadScene("HelpMenu");
+
+        if (helpPanel != null && mainMenuButtons != null)
+        {
+            // Toggle Help Panel and Main Menu Buttons
+            helpPanel.SetActive(true);
+            mainMenuButtons.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("Help Panel or Main Menu Buttons are not assigned!");
+        }
+    }
+
+    public void CancelHelpMenu()
+    {
+        PlayButtonSound();
+
+        if (helpPanel != null && mainMenuButtons != null)
+        {
+            // Toggle Main Menu Buttons and hide Help Panel
+            helpPanel.SetActive(false);
+            mainMenuButtons.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("Help Panel or Main Menu Buttons are not assigned!");
+        }
     }
 
     private void PlayButtonSound()
     {
-        if (buttonClickAudioSource != null)
+        if (buttonClickAudioSource != null && !AudioListener.pause) // Check global mute state
         {
             buttonClickAudioSource.Play();
         }
-        else
+        else if (buttonClickAudioSource == null)
+        {
+            Debug.LogWarning("ButtonClick AudioSource is not assigned!");
+        }
+    }
+
+    private void MONYETYESYES()
+    {
+        if (SUARAMONYETYESYES != null && !AudioListener.pause) // Check global mute state
+        {
+            SUARAMONYETYESYES.Play();
+        }
+        else if (SUARAMONYETYESYES == null)
         {
             Debug.LogWarning("ButtonClick AudioSource is not assigned!");
         }
@@ -63,12 +84,11 @@ public class MainMenuController : MonoBehaviour
 
     public void ResetButtonState(GameObject button)
     {
-        // Resets button interactable state to visually reset
         var buttonComponent = button.GetComponent<UnityEngine.UI.Button>();
         if (buttonComponent != null)
         {
-            buttonComponent.interactable = false; // Temporarily disable
-            buttonComponent.interactable = true;  // Re-enable to reset state
+            buttonComponent.interactable = false;
+            buttonComponent.interactable = true;
         }
     }
 }

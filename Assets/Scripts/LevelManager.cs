@@ -7,17 +7,16 @@ public class LevelManager : MonoBehaviour
     public bool levelcompleted = false;
     public int level = 0;
 
-    public Countdown countdownLabel;
+    //public Countdown countdownLabel;
  
     void Awake()
     {
-        StartCoroutine(countdownLabel.StartCountdown(countdownLabel.countdownLabel));
-        Time.timeScale = 1; // Make sure the game is running
+        Time.timeScale = 1; // Ensure the game starts with normal time scale
     }
 
     void Start()
     {
-        
+        Time.timeScale = 1; // Ensure the game starts with normal time scale
     }
 
     void Update()

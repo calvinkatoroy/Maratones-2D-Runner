@@ -164,7 +164,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee9e096df89038049a977b6865712849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb: {fileID: 0}
+  rb: {fileID: 6709468498230914745}
+  PointA: {fileID: 1636901339259357709}
+  PointB: {fileID: 2396489385838318539}
+  player: {fileID: 0}
+  speed: 3
 --- !u!95 &-7232432108344616676
 Animator:
   serializedVersion: 5

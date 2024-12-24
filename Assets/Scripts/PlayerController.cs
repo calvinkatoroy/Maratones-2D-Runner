@@ -65,27 +65,56 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        rb.velocity = new Vector2(speed, rb.velocity.y);
-        RaycastHit2D hitGround = Physics2D.Raycast(groundRayObject.transform.position, -Vector2.up);
-        if (hitGround.collider != null)
-        {
-            if (hitGround.distance < 0.1f)
-            {
-                isGrounded = true;
-            }
-            else
-            {
-                isGrounded = false;
-            }
 
-            if (hitGround.collider.CompareTag("Enemy") && rb.velocity.y < 0 && hitGround.collider.gameObject.layer != 10)
+    rb.velocity = new Vector2(speed, rb.velocity.y);    // Vertical ground check
+    RaycastHit2D hitGround = Physics2D.Raycast(groundRayObject.transform.position, -Vector2.up, 0.1f);
+
+    // Horizontal ground check (left and right)
+    RaycastHit2D hitGroundLeft = Physics2D.Raycast(transform.position, Vector2.left, 0.1f);
+    RaycastHit2D hitGroundRight = Physics2D.Raycast(transform.position, Vector2.right, 0.1f);
+
+    // Determine if grounded
+    if ((hitGround.collider != null && hitGround.collider.CompareTag("Terrain")) ||
+        (hitGroundLeft.collider != null && hitGroundLeft.collider.CompareTag("Terrain")) ||
+        (hitGroundRight.collider != null && hitGroundRight.collider.CompareTag("Terrain")))
+    {
+        isGrounded = true;
+    }
+    else
+    {
+        isGrounded = false;
+    }
+
+    // Debugging: Visualize the rays
+    Debug.DrawRay(groundRayObject.transform.position, -Vector2.up * 0.1f, Color.green); // Vertical ray
+    Debug.DrawRay(transform.position, Vector2.left * 0.1f, Color.blue); // Left horizontal ray
+    Debug.DrawRay(transform.position, Vector2.right * 0.1f, Color.red); // Right horizontal ray
+
+    if (hitGround.collider != null)
+    {
+        if (hitGround.distance < 0.1f)
+        {
+            isGrounded = true;
+
+            // Check for x-axis collisions and stop horizontal movement
+            RaycastHit2D hitX = Physics2D.Raycast(transform.position, Vector2.right * Mathf.Sign(rb.velocity.x), 0.1f);
+            if (hitX.collider != null && hitX.collider.CompareTag("Terrain"))
             {
-                // Player is falling down and hit an enemy
-                Destroy(hitGround.collider.gameObject);  // Destroy the enemy
-                rb.velocity = new Vector2(rb.velocity.x, 2f);
-                // isGrounded = true;  
+                rb.velocity = new Vector2(0, rb.velocity.y);
             }
         }
+        else
+        {
+            isGrounded = false;
+        }
+
+        if (hitGround.collider.CompareTag("Enemy") && rb.velocity.y < 0 && hitGround.collider.gameObject.layer != 10)
+        {
+            // Player is falling down and hit an enemy
+            Destroy(hitGround.collider.gameObject);  // Destroy the enemy
+            rb.velocity = new Vector2(rb.velocity.x, 2f);
+        }
+    }
 
         // Walking logic
         // bool isWalking = Mathf.Abs(rb.velocity.x) > 0.1f && isGrounded;

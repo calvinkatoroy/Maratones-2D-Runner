@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class PlayButtonManager : MonoBehaviour
 {
@@ -13,103 +14,119 @@ public class PlayButtonManager : MonoBehaviour
 
     [Header("Buttons")]
     public Button pauseButton;
-    public Button muteButton;
+    public Toggle muteToggle;
     public Button jumpButton;
     public Button slideButton;
 
+    [Header("Player Reference")]
+    public PlayerController playerController; // Reference to the PlayerController script
+
+    [Header("UI Elements")]
+    public GameObject pauseUI; // Assign the GameObject to activate/deactivate on pause
+
     private bool isPaused = false;
-    private bool isMuted = false;
 
     void Start()
     {
-        // Assign button click listeners for UI interactions
-        pauseButton.onClick.AddListener(() => HandleButtonClick(pauseButton, TogglePause));
-        muteButton.onClick.AddListener(() => HandleButtonClick(muteButton, ToggleMute));
-        jumpButton.onClick.AddListener(() => HandleButtonClick(jumpButton, PlayJump));
-        slideButton.onClick.AddListener(() => HandleButtonClick(slideButton, PlaySlide));
+        if (playerController == null)
+        {
+            Debug.LogError("PlayerController reference is not assigned in PlayButtonManager.");
+            return;
+        }
+
+        // Assign button click listeners
+        pauseButton.onClick.AddListener(() => { TogglePause(); });
+        muteToggle.onValueChanged.AddListener((isMuted) => { ToggleMute(isMuted); });
+        jumpButton.onClick.AddListener(() => { TriggerJump(); });
+        slideButton.onClick.AddListener(() => { TriggerSlide(); });
     }
 
     void Update()
     {
-        HandleKeyInput();
+        HandleAllInputs();
     }
 
-    private void HandleKeyInput()
+    private void HandleAllInputs()
     {
-        // Handle jump
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
         {
-            PlayJump();
-            ResetButtonState(jumpButton.gameObject);
+            SimulateButtonPress(jumpButton);
         }
 
-        // Handle slide
         if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
-            PlaySlide();
-            ResetButtonState(slideButton.gameObject);
+            SimulateButtonPress(slideButton);
         }
 
-        // Handle pause
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            TogglePause();
-            ResetButtonState(pauseButton.gameObject);
+            SimulateButtonPress(pauseButton);
         }
 
-        // Handle mute
         if (Input.GetKeyDown(KeyCode.M))
         {
-            ToggleMute();
-            ResetButtonState(muteButton.gameObject);
+            muteToggle.isOn = !muteToggle.isOn; // Flip toggle state programmatically
         }
     }
 
-    private void HandleButtonClick(Button button, System.Action action)
+    // Simulate a button press with visual feedback
+    private void SimulateButtonPress(Button button)
     {
-        action.Invoke();
-        ResetButtonState(button.gameObject);
+        // Highlight the button to trigger the visual state transition
+        EventSystem.current.SetSelectedGameObject(button.gameObject);
+
+        // Simulate the button click
+        button.onClick.Invoke();
+
+        // Unselect the button after a short delay to allow sprite transition
+        Invoke(nameof(ClearSelectedObject), 0.1f);
     }
 
-    private void PlayJump()
+    // Clear the selected object in the EventSystem
+    private void ClearSelectedObject()
+    {
+        EventSystem.current.SetSelectedGameObject(null);
+    }
+
+    private void TriggerJump()
     {
         PlaySound(jumpSound);
         Debug.Log("Jump triggered");
     }
 
-    private void PlaySlide()
+    private void TriggerSlide()
     {
         PlaySound(slideSound);
         Debug.Log("Slide triggered");
     }
 
     private void TogglePause()
+{
+    isPaused = !isPaused;
+    Time.timeScale = isPaused ? 0 : 1;
+
+    // Activate or deactivate the pause UI
+    if (pauseUI != null)
     {
-        isPaused = !isPaused;
-        Time.timeScale = 0;
-        PlaySound(pauseSound);
-        Debug.Log(isPaused ? "Game Paused" : "Game Resumed");
+        pauseUI.SetActive(isPaused);
+    }
+    else
+    {
+        Debug.LogWarning("Pause UI is not assigned in the PlayButtonManager.");
     }
 
-    private void ToggleMute()
+    PlaySound(pauseSound);
+    Debug.Log(isPaused ? "Game Paused" : "Game Resumed");
+    }
+
+
+    private void ToggleMute(bool isMuted)
     {
-        isMuted = !isMuted;
         if (audioSource != null)
         {
             audioSource.mute = isMuted;
         }
         Debug.Log(isMuted ? "Muted" : "Unmuted");
-    }
-
-    private void ResetButtonState(GameObject button)
-    {
-        var buttonComponent = button.GetComponent<Button>();
-        if (buttonComponent != null)
-        {
-            // Force the button to reset its state
-            buttonComponent.interactable = false;
-            buttonComponent.interactable = true;
-        }
     }
 
     private void PlaySound(AudioClip clip)
